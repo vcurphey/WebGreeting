@@ -1,0 +1,70 @@
+Use cWebView.pkg
+Use cWebPanel.pkg
+Use cWebForm.pkg 
+//Use WebClientHelper.vw // oClientWSHelper
+Use cWSGreetingService.pkg
+Use cWebButton.pkg
+
+Object oWSGreetingService1 is a cWSGreetingService
+
+    //
+    // Interface:
+    //
+    // Function wsGreeting String llsName Returns String
+    //
+
+
+    // phoSoapClientHelper
+    //     Setting this property will pop up a view that provides information
+    //     about the Soap (xml) data transfer. This can be useful in debugging.
+    //     If you use this you must make sure you USE the test view at the top
+    //     of your program/view by adding:   Use WebClientHelper.vw // oClientWSHelper
+    //Set phoSoapClientHelper to oClientWSHelper
+
+End_Object
+
+Object oCallGreetingWebService is a cWebView
+    Set piWidth to 700
+    Set psCaption to "CallGreetingWebService"
+
+    // Your DDO structure will go here
+
+    Object oWebMainPanel is a cWebPanel
+        Set piColumnCount to 12
+        
+        // place controls here.
+        // Your view will grow as controls are added
+        
+        Object oNameForm is a cWebForm
+            Set piColumnSpan to 0
+            Set psLabel to "Name:"
+        End_Object
+
+        Object oResultForm is a cWebForm
+            Set piColumnSpan to 0
+            Set psLabel to "Result:"
+        End_Object
+
+        Object oGoButton is a cWebButton
+            Set piColumnSpan to 0
+            Set psCaption to "Go"
+        
+            Procedure OnClick
+                String sName sResult
+
+                WebGet psValue of oNameForm to sName
+
+                If (sName = "") Begin
+                    Move "Stranger" to sName
+                End
+
+                Get wsGreeting of oWSGreetingService1 sName to sResult
+                WebSet psValue of oResultForm to sResult
+                
+            End_Procedure
+
+        End_Object
+        
+    End_Object 
+
+End_Object
